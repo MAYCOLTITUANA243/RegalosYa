@@ -1,7 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 
-const ApisOperacionesMatematicas = require('./src/rutas/ApisOperacionesMatematicas')
+const adornoApi = require('./src/rutas/Adorno')
 
 const app = express();
 const port = 3001;
@@ -10,7 +10,7 @@ app.use(cors());
 
 //middleware
 app.use(express.json());
-app.use(ApisOperacionesMatematicas);
+app.use(adornoApi);
 //rutas
 app.get("/", (req, res) => {
   res.send("APIs simmulador de costos");
@@ -18,7 +18,7 @@ app.get("/", (req, res) => {
 
 //conexion a mongo db atlas
 mongoose
-  .connect("mongodb+srv://admin:admin@cluster.dflbb.mongodb.net/?retryWrites=true&w=majority")
+  .connect("mongodb+srv://admin:admin@regalosya.tufm65t.mongodb.net/?retryWrites=true&w=majority")
   .then(() => console.log("Conectado a Mongo DB Atlas"))
   .catch((error) => console.error(error));
 

@@ -1,57 +1,54 @@
 const express = require("express");
-const estudiante = require("../modelos/Estudiante");
-const estudianteEsquema = require("../modelos/Estudiante");
+const Adorno = require("../modelos/Adorno");
+const adornoEsquema = require("../modelos/Adorno");
 const router = express.Router();
 
 // METODO POST DE ESTUDIANTE
-router.post("/estudiantes", (req, res) => {
-  let estudiante = new estudianteEsquema ({
+router.post("/regalos", (req, res) => {
+  let adorno = new adornoEsquema ({
     nombre:req.body.nombre,
-    apellido:req.body.apellido,
-    fecha:req.body.fecha,
-    email:req.body.email,
-    cedula:req.body.cedula,
+    precio:req.body.precio,
+    url:req.body.url,
+    descripcion:req.body.descripcion
   });
-  estudiante
+  adorno
     .save()
     .then((data) => res.json(data))
     .catch((error) => res.json({ message: error }));
 });
 
 // METODO GET TODOS ESTUDIANTES
-router.get("/estudiantes", (req, res) => {
-    estudianteEsquema
+router.get("/regalos", (req, res) => {
+    adornoEsquema
     .find()
     .then((data) => res.json(data))
     .catch((error) => res.json({ message: error }));
 });
 
 // METODO GET ESTUDIANTE POR ID
-router.get("/estudiantes/:id", (req, res) => {
+router.get("/regalos/:id", (req, res) => {
   const { id } = req.params;
-  estudianteEsquema
+  adornoEsquema
     .findById(id)
     .then((data) => res.json(data))
     .catch((error) => res.json({ message: error }));
 });
 
 // METODO DELETE ESTUDIANTE POR ID
-router.delete("/estudiantes/:id", (req, res) => {
+router.delete("/regalos/:id", (req, res) => {
   const { id } = req.params;
-  estudianteEsquema
-
+  adornoEsquema
     .remove({ _id: id })
     .then((data) => res.json(data))
     .catch((error) => res.json({ message: error }));
 });
 
 // METODO UPDATE ESTUDIANTE POR ID
-router.put("/estudiantes/:id", (req, res) => {
+router.put("/regalos/:id", (req, res) => {
   const { id } = req.params;
-  const { nombre, apellido, fecha, email, cedula } = req.body;
-  //const total=req.body.preci*req.body.quantity;
-  Estudiante
-    .updateOne({ _id: id }, { $set: { nombre, apellido, fecha, email, cedula} })
+  const { nombre, precio, url, descripcion} = req.body;
+  adornoEsquema
+    .updateOne({ _id: id }, { $set: { nombre, precio, url, descripcion} })
     .then((data) => res.json(data))
     .catch((error) => res.json({ message: error }));
 });
