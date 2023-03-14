@@ -1,7 +1,10 @@
 const mongoose = require('mongoose')
 
-const adorno = mongoose.Schema({
-
+const adornoScheme = new mongoose.Schema({
+    idAdorno:{
+        type: String,
+        required: true
+    },
     nombre:{
         type: String,
         required: true
@@ -22,5 +25,5 @@ const adorno = mongoose.Schema({
         required:true
     },
 })
+module.exports = mongoose.model("Adorno", adornoScheme);
 
-module.exports = mongoose.model('Adorno', adorno, 'Adorno')

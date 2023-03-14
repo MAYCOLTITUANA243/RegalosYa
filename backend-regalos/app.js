@@ -1,25 +1,18 @@
-const express = require('express');
-const mongoose = require("mongoose");
-const medicinesRoutes = require("./src/rutas/Estudiante");
-const controlRoutes = require("./src/rutas/ControlAcademico");
-
+require("dotenv").config();
+const express = require("express");
+const cors = require("cors");
+const databaseConnection = require("./config/mongo");
 const app = express();
 const port = process.env.PORT || 3000;
-var cors = require('cors');
-app.use(cors());
 
-//middleware
+app.use(cors());
 app.use(express.json());
-app.use(medicinesRoutes);
-app.use(controlRoutes);
-//routes
-app.get("/", (req, res) => {
-    res.send("Welcome to my API");
+//invoncamos rutas
+app.use("/api", require("./routes"));
+
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`);
 });
 
-//mongodb conection
-mongoose.connect("mongodb+srv://admin:admin@cluster0.ppvtgtu.mongodb.net/Bloz-Cell?retryWrites=true&w=majority")
-.then(() => console.log("Connected to MongoDB Atlas"))
-.catch((error) => console.error(error)); 
 
-app.listen(port, () => console.log('server listening on port', port));
+databaseConnection();
