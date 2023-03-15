@@ -65,7 +65,7 @@ function App() {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const response = await axios.get("http://localhost:3001/api/adorno");
+        const response = await axios.get("https://regalos-ya1-1ncf.vercel.app/api/adorno");
         setData(response.data.data);
       } catch (error) {
         setError(error);
