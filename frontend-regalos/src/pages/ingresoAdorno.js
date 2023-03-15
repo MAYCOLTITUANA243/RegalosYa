@@ -18,6 +18,7 @@ const url = "https://regalos-ya1-1ncf.vercel.app/api/adorno";
 class App extends React.Component {
   //Estado del data y del form
   state = {
+    data1:[],
     data: [],
     form: {
       idAdorno:"",
