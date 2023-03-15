@@ -124,7 +124,7 @@ class App extends React.Component {
     const { form } = this.state;
     return (
       <>
-        <Container>
+        <Container className="container">
           <br />
           <Button
             className="btn btn-success"
