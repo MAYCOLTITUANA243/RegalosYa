@@ -142,7 +142,7 @@ class App extends React.Component {
                 <th>ID</th>
                 <th>Nombre</th>
                 <th>Precio</th>
-                <th>URL</th>
+                <th>Imagen</th>
                 <th>Descripcion</th>
                 <th>Acciones</th>
               </tr>
@@ -153,7 +153,7 @@ class App extends React.Component {
                   <td>{element.idAdorno}</td>
                   <td>{element.nombre}</td>
                   <td>{element.precio}</td>
-                  <td>{element.url}</td>
+                  <td>{ <img src={element.url} style={{ width: "100px", height: "100px" }}/>}</td>
                   <td>{element.descripcion}</td>
                   <td>
                     <Button
