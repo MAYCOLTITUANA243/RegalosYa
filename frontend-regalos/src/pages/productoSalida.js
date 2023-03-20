@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useCallback  } from "react";
 import axios from "axios";
-import Button from '@material-ui/core/Button';
+//import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
@@ -11,14 +11,14 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
-import { Modal } from '@material-ui/core';
-
+//import { Modal } from '@material-ui/core';
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
       <Link color="inherit" href="https://mui.com/">
-        Your Website
+        Regalos Ya
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -65,20 +65,53 @@ const useStyles = makeStyles((theme) => ({
     maxHeight: "90%",
     objectFit: "contain",
   },
+  imageContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '100%',
+  },
+  imageModal: {
+    maxWidth: '50%',
+    maxHeight: '50%',
+  },
 }));
 
 function App() {
-   const [open, setOpen] = useState(false);
+
   const [selectedImage, setSelectedImage] = useState("");
+  const [nombre, setNombre] = useState("");
+  const [precio, setPrecio] = useState("");
+  const [modal, setModal] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleOpen = (url) => {
+  const toggle = useCallback(() => {
+    if (!isModalOpen) {
+      setModal(!modal);
+      setIsModalOpen(true);
+    }
+  }, [isModalOpen, modal]);
+
+  const handleClose = useCallback(() => {
+    setModal(false);
+    setIsModalOpen(false);
+  }, []);
+
+  const guardarDatos = (url,nombre,precio) => {
     setSelectedImage(url);
-    setOpen(true);
+    setNombre(nombre);
+    setPrecio(precio);
+    toggle();
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const comprarRegalo = () => {
+    const phoneNumber = '+593987819155';
+    const message = 'Hola, me gustaria tener informacion sobre:\n'; 
+
+    const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message+nombre+"\n"+selectedImage+"\n"+precio)}`;
+    window.open(url);
   };
+
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -115,19 +148,24 @@ function App() {
                 <Card className={classes.card}>
                   <CardMedia
                     className={classes.cardMedia}
-                    onClick={() => handleOpen(item.url)}
+                    onClick={() => guardarDatos(item.url,item.nombre,item.precio)}
                     image={item.url}
                     title="Image title"
                   />
-                  <Modal
-                    className={classes.modal}
-                    open={open}
-                    onClose={handleClose}
-                    disableEnforceFocus
-                    disableAutoFocus
-                  >
-                    <img className={classes.image} src={selectedImage} alt="Imagen" />
+
+                   <Modal isOpen={modal} toggle={handleClose}>
+                    <ModalHeader toggle={handleClose} className="text-center"><div  className="d-flex justify-content-center" >{nombre}</div> </ModalHeader>
+                    <ModalBody>
+                    <div className={classes.imageContainer}>
+                      <img className={classes.imageModal} src={selectedImage} alt="Imagen" />
+                    </div>
+                    </ModalBody>
+                    <ModalFooter>
+                      <Button color="primary" onClick={()=>comprarRegalo()}>Comprar</Button>
+                      <Button color="secondary" onClick={()=>handleClose()}>Cerrar</Button>
+                    </ModalFooter>
                   </Modal>
+
                   <CardContent className={classes.cardContent}>
                     <Typography gutterBottom variant="h5" component="h2">
                       {item.nombre}
@@ -140,7 +178,7 @@ function App() {
                     </Typography>
                   </CardContent>
                   <CardActions>
-                    <Button size="small" color="primary">
+                    <Button size="small" color="primary" onClick={()=>comprarRegalo()}>
                       Comprar
                     </Button>
                   </CardActions>
@@ -153,10 +191,10 @@ function App() {
       {/* Footer */}
       <footer className={classes.footer}>
         <Typography variant="h6" align="center" gutterBottom>
-          Footer
+          Regalos Ya
         </Typography>
         <Typography variant="subtitle1" align="center" color="textSecondary" component="p">
-          Something here to give the footer a purpose!
+          Deja que el amor fluya!
         </Typography>
         <Copyright />
       </footer>
