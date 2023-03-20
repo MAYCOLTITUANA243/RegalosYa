@@ -11,6 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
+import { Modal } from '@material-ui/core';
 
 function Copyright() {
   return (
@@ -54,9 +55,30 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
     padding: theme.spacing(6),
   },
+  modal: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  image: {
+    maxWidth: "90%",
+    maxHeight: "90%",
+    objectFit: "contain",
+  },
 }));
 
 function App() {
+   const [open, setOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState("");
+
+  const handleOpen = (url) => {
+    setSelectedImage(url);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -93,17 +115,19 @@ function App() {
                 <Card className={classes.card}>
                   <CardMedia
                     className={classes.cardMedia}
-                    /*component="img"
-                    style={{
-                      width: "100px",
-                      height: "100px",
-                      objectFit: "contain",
-                      objectPosition: "center",
-                    }}*/
-                    
+                    onClick={() => handleOpen(item.url)}
                     image={item.url}
                     title="Image title"
                   />
+                  <Modal
+                    className={classes.modal}
+                    open={open}
+                    onClose={handleClose}
+                    disableEnforceFocus
+                    disableAutoFocus
+                  >
+                    <img className={classes.image} src={selectedImage} alt="Imagen" />
+                  </Modal>
                   <CardContent className={classes.cardContent}>
                     <Typography gutterBottom variant="h5" component="h2">
                       {item.nombre}
