@@ -151,4 +151,9 @@ nav a {
     text-transform: uppercase;
   }
 }
+.carousel-image {
+  object-fit: cover;
+  object-position: center;
+  height: 100%;
+}
 

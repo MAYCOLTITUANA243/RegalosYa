@@ -1,12 +1,6 @@
+import "../App.css";
 import React, { useState, useEffect,useCallback  } from "react";
-import axios from "axios";
-//import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -17,16 +11,18 @@ import Whatsapp from '../img/whatsapp.png';
 import Instagram from '../img/instagram.webp';
 import Google from '../img/google.webp';
 import Domicilio from '../img/domicilio.png';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Carousel } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import {
   Table
 } from "reactstrap";
+
 
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
-      <Link color="inherit">
+      <Link color="inherit" href="https://mui.com/">
         Regalos Ya
       </Link>{' '}
       {new Date().getFullYear()}
@@ -34,6 +30,14 @@ function Copyright() {
     </Typography>
   );
 }
+const comprarRegalo = () => {
+    const phoneNumber = '+593997676831';
+    const message = 'Hola, necesito más información sobre los productos de Regalos Ya.\n'; 
+
+    const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    window.open(url);
+};
+
 const useStyles = makeStyles((theme) => ({
   icon: {
     marginRight: theme.spacing(2),
@@ -87,115 +91,65 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function App() {
-
-  const [selectedImage, setSelectedImage] = useState("");
-  const [nombre, setNombre] = useState("");
-  const [precio, setPrecio] = useState("");
-  const [modal, setModal] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const toggle = useCallback(() => {
-    if (!isModalOpen) {
-      setModal(!modal);
-      setIsModalOpen(true);
-    }
-  }, [isModalOpen, modal]);
-
-  const handleClose = useCallback(() => {
-    setModal(false);
-    setIsModalOpen(false);
-  }, []);
-
-  const guardarDatos = (url,nombre,precio) => {
-    setSelectedImage(url);
-    setNombre(nombre);
-    setPrecio(precio);
-    toggle();
-  };
-
-  const comprarRegalo = () => {
-    const phoneNumber = '+593997676831';
-    const message = 'Hola, me gustaria tener informacion sobre:\n'; 
-
-    const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message+nombre+"\n"+selectedImage+"\n"+precio)}`;
-    window.open(url);
-  };
-
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const classes = useStyles();
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const response = await axios.get("https://regalos-ya1-1ncf.vercel.app/api/adorno");
-        setData(response.data.data);
-      } catch (error) {
-        setError(error);
-      }
-      setLoading(false);
-    };
-    fetchData();
-  }, []);
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
-  
+    const classes = useStyles();
   return (
     
     <div>
       <React.Fragment>
       <CssBaseline />
       <main>
-        {/* Hero unit */}
-        <Container className={classes.cardGrid} maxWidth="md">
-          {/* End hero unit */}
-          <Grid container spacing={4}>
-            {data.map((item) => (
-              <Grid item key={classes.card} xs={12} sm={6} md={4}>
-                <Card className={classes.card}>
-                  <CardMedia
-                    className={classes.cardMedia}
-                    onClick={() => guardarDatos(item.url,item.nombre,item.precio)}
-                    image={item.url}
-                    title="Image title"
-                  />
-
-                   <Modal isOpen={modal} toggle={handleClose}>
-                    <ModalHeader toggle={handleClose} className="text-center"><div  className="d-flex justify-content-center" >{nombre}</div> </ModalHeader>
-                    <ModalBody>
-                    <div className={classes.imageContainer}>
-                      <img className={classes.imageModal} src={selectedImage} alt="Imagen" />
-                    </div>
-                    </ModalBody>
-                    <ModalFooter>
-                      <Button color="primary" onClick={()=>comprarRegalo()}>Comprar</Button>
-                      <Button color="secondary" onClick={()=>handleClose()}>Cerrar</Button>
-                    </ModalFooter>
-                  </Modal>
-
-                  <CardContent className={classes.cardContent}>
-                    <Typography gutterBottom variant="h5" component="h2">
-                      {item.nombre}
-                    </Typography>
-                    <Typography>
-                      {item.descripcion}
-                    </Typography>
-                    <Typography gutterBottom variant="h5" component="h2">
-                      ${item.precio}
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Button size="small" color="primary" onClick={()=>comprarRegalo()}>
-                      Comprar
-                    </Button>
-                  </CardActions>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
+      <Container className="container" style={{ display: 'flex', flexDirection: 'row' }}>
+        <Table >
+            <tbody>
+              <tr>
+                <td style={{verticalAlign: 'top' }}>
+                  <h1 style={{textAlign:'center'}}>Tienda de Regalos</h1>
+                  <Typography variant="body2" color="textSecondary" align="justify">
+                  <p>
+                  La vida se resume en momentos de alegría y mucha felicidad. Gracias por dejarnos formar parte de un recuerdo inolvidable lleno de amor     
+                  </p>
+                  <p >Con Regalos Ya  encontrarás todos los arreglos para todo tipo de eventos como:</p>
+                  <p>- Matrimonios</p>
+                  <p>- Bautizos</p>
+                  <p>- Fiesta de revelación</p>
+                  <p>- 15 años y mucho más.</p>
+                  <p>Contamos con entrega a domicilio</p>
+                  <p>Ven y visítanos estamos en el sector de la Mariana de Jesús en Inglaterra o solicita mayor información al 0997676831 o en nuestras redes sociales.</p>
+                  <p>Te esperamos....</p>
+                  </Typography>
+                </td>
+                <td>
+                <Carousel style={{height:'500px',maxWidth:'400px'}} interval={null} className="carousel slide" data-ride="carousel">
+                    <Carousel.Item>
+                        <img
+                        style={{ objectFit: "cover",height:'500px',maxWidth:'100%'}}
+                        src="https://scontent.fuio25-1.fna.fbcdn.net/v/t39.30808-6/335892689_535234088743185_2153801926121724365_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=8bfeb9&_nc_eui2=AeFCgAkfEElsj_38BlhNU2OjC3H8LKFSkoELcfwsoVKSgSv_1q0pCP2odlut_hdLJQK90yF_R9KVD1fI1lOOYUix&_nc_ohc=2eh9ycyDgKgAX-dJyNa&_nc_ht=scontent.fuio25-1.fna&oh=00_AfDrbXxEYucn99ZGruqqiqAbdwsyWcsWstapLWk6jcfNlg&oe=6432E496"
+                        alt="First slide"
+                        
+                        />
+                    </Carousel.Item>
+                    <Carousel.Item>
+                        <img
+                        style={{ objectFit: "cover", height:'500px',maxWidth:'100%'}}
+                        src="https://scontent.fuio25-1.fna.fbcdn.net/v/t39.30808-6/335920288_892563985341993_6890825777452700903_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=8bfeb9&_nc_eui2=AeEiXCJaBUIXv9D9DDYZLzmNQeKo596a5hRB4qjn3prmFKjAS4-FbzcsnVL9phILUOBlMdh3cBL7Ng64yot1cpf4&_nc_ohc=s5iKH8NsCdwAX8m72qe&_nc_oc=AQmVBO8t3CLLAgBzImhll-_HLipSmoHB1PaoXfLIzKr7gexrBuobhdgxV_vyFu3kifM&_nc_ht=scontent.fuio25-1.fna&oh=00_AfAlWi9vajfFlp8am6WFUgaLzeio-W8BA2sK1QSpgKu_tw&oe=6432891C"
+                        alt="Second slide"
+                        />
+                    </Carousel.Item>
+                    <Carousel.Item>
+                        <img
+                        style={{ objectFit: "cover", height:'500px',maxWidth:'100%'}}
+                        src="https://scontent.fuio25-1.fna.fbcdn.net/v/t39.30808-6/335620045_724424212408857_5013622514649127882_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=8bfeb9&_nc_eui2=AeE4ijjIyhdltgS4FAy7x2U3K2_kF2JYzHkrb-QXYljMefHqDrsNavO6p_ecGFs_PbKJ9wyRu_tyOh5QfUlcWM2U&_nc_ohc=Y82B4gIWH74AX_jlVQ9&_nc_ht=scontent.fuio25-1.fna&oh=00_AfDvk1tKt53O7cYqF1V3OyPG5C-DlnjF62275653tiyIxA&oe=643331D0"
+                        alt="Third slide"
+                        />
+                    </Carousel.Item>
+                  </Carousel>
+                </td>
+              </tr>
+            </tbody>
+          </Table>
         </Container>
+        
+        
       </main>
       <main style={{  background:"#E0E0E0"}}>
       <Container className="container" style={{ display: 'flex', flexDirection: 'row' }}>
@@ -270,7 +224,8 @@ function App() {
           </Table>
           </Container>
         </main>
-      {/* Footer */}
+      {/* Footer */} 
+      
       <footer className={classes.footer}>
         <Typography variant="h6" align="center" gutterBottom>
           Regalos Ya
